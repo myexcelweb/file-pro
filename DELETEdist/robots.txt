@@ -1,6 +1,0 @@
-# Allow all search engines to crawl all content
-User-agent: *
-Disallow:
-
-# Tell search engines where to find the sitemap
-Sitemap: https://file-pro.netlify.app/sitemap-index.xml
