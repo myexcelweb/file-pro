@@ -1,0 +1,87 @@
+---
+// MainLayout.astro
+import Footer from "../components/Footer.astro";
+import "../styles/global.css";
+
+const {
+  title = "File Pro 🚀 | Advanced Tools",
+  description = "An advanced suite of professional digital tools for PDF editing, Excel processing, AI image manipulation, and data analytics.",
+  keywords = "Parimal Hodar, digital tools, PDF editor, Excel tools, AI image editor, portfolio, blog",
+  image = "/og-image.png", // Default OG/Twitter image
+} = Astro.props;
+---
+
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <meta name="theme-color" content="#1F2937" />
+
+    <!-- Essential SEO -->
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={Astro.url.href} />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:url" content={Astro.url.href} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "File Pro",
+      "url": "https://file-pro.netlify.app/",
+      "description": "{description}",
+      "publisher": {
+        "@type": "Person",
+        "name": "Parimal Hodar"
+      }
+    }
+    </script>
+
+    <!-- Font Awesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-sans bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white">
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
+      <a href="/" class="text-xl font-bold hover:text-blue-400">File Pro</a>
+      <div class="space-x-6">
+        <a href="/" class="hover:text-blue-400">Home</a>
+        <a href="/about" class="hover:text-blue-400">About</a>
+        <a href="/contact" class="hover:text-blue-400">Contact</a>
+        <a href="/blog" class="hover:text-blue-400">Blog</a>
+      </div>
+    </nav>
+
+    <!-- Main Page Content -->
+    <main class="container mx-auto px-6 py-10">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <Footer />
+  </body>
+</html>

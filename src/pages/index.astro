@@ -1,16 +1,310 @@
 ---
-
+// This page uses the main layout to get the header, footer, and global styles.
+import MainLayout from "../layouts/MainLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+  title="Parimal Hodar – File Pro | Advanced Digital Tools"
+  description="Official website of Parimal Hodar. Explore cutting-edge digital tools, Excel apps, PDF editors, and more by Parimal Hodar."
+  keywords="Parimal Hodar, digital tools, Excel tools, PDF editor, AI image editor, portfolio, blog"
+>
+
+  <!-- =================================================================== -->
+  <!-- 1. HERO SECTION                                                     -->
+  <!-- =================================================================== -->
+  <section class="text-center py-20 bg-gray-100 dark:bg-gray-800 rounded-lg">
+    <h1 class="text-5xl font-extrabold mb-4">
+  Advanced Digital Tools Suite 
+  <span class="text-xl font-normal">by Parimal Hodar</span>
+</h1>
+
+    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+      Unlock your potential with digital tools, PDF editors, Excel apps, and AI solutions by Parimal Hodar.
+    </p>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- 2. TOOLS SECTION (with detailed highlights)                         -->
+  <!-- =================================================================== -->
+  <section id="tools" class="my-20">
+    <h2 class="text-3xl font-bold mb-8 text-center">
+  Premium Professional Tools
+  <span class="text-lg font-medium text-gray-500 dark:text-gray-400">by Parimal Hodar</span>
+</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- PDF Document Editor Pro -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-file-pdf mr-3 text-red-500"></i>PDF Document Editor
+          Pro
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>AI-powered
+            PDF editing
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Compression,
+            merging, & watermarking
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Secure
+            document processing
+          </li>
+        </ul>
+        <a
+          href="https://pdf-pro.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Launch PDF Editor
+        </a>
+      </div>
+
+      <!-- AI Image Background Studio -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-image mr-3 text-purple-500"></i>AI Image Background
+          Studio
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>AI-based
+            background editing
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Remove,
+            replace, and enhance
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Batch
+            processing and 4K output
+          </li>
+        </ul>
+        <a
+          href="https://bg-pro.streamlit.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Launch Image Studio
+        </a>
+      </div>
+
+      <!-- Excel Merger Pro -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-file-excel mr-3 text-green-500"></i>Excel Merger Pro
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Advanced
+            Excel file merging
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Preserves
+            formulas and formatting
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Fast, smart
+            merge algorithms
+          </li>
+        </ul>
+        <a
+          href="https://xl-merge.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Launch Excel Merger
+        </a>
+      </div>
+
+      <!-- Legal Calculator Suite -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-gavel mr-3 text-yellow-600"></i>Legal Calculator
+          Suite
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Real-time
+            legal fee calculations
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Court,
+            advocate, and probate fees
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Updated fee
+            structures
+          </li>
+        </ul>
+        <a
+          href="https://advfee.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Launch Calculator
+        </a>
+      </div>
+
+      <!-- Heading Pro -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-heading mr-3 text-indigo-500"></i>Heading Pro
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Smart Excel data organizer
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Groups data by category automatically
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Adds headings & serial numbers
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Works fully offline - data stays private
+          </li>
+        </ul>
+        <a
+          href="https://heading-pro.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Launch Heading Pro
+        </a>
+      </div>
+
+      <!-- Porbandar (Gujarat) Voter List 2002 -->
+      <div class="tool-card">
+        <h3 class="tool-title">
+          <i class="fas fa-search mr-3 text-teal-500"></i>Porbandar Voter List 2002
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Search your name in 2002 voter list
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Enter details in Gujarati only
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>EPIC numbers: enter last 6 digits only
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Porbandar (Gujarat) specific database
+          </li>
+        </ul>
+        <a
+          href="https://porbandar-voter-list-2002.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button"
+        >
+          Search Voter List
+        </a>
+      </div>
+
+      <!-- Excel Pro Center -->
+      <div class="tool-card">
+        <h3 class="tool-title items-baseline">
+          <i class="fas fa-table mr-3 text-green-600"></i>
+          <span>Excel Pro Center</span>
+          <span
+            class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full"
+          >
+            Selected formats only
+          </span>
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Advanced
+            Excel transformation hub
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Data
+            cleaning, validation, and conversion
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Bulk
+            operations and error detection
+          </li>
+        </ul>
+        <a
+          href="https://xlreports.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button-special"
+        >
+          Launch Excel Tools
+        </a>
+      </div>
+
+      <!-- Analytics Dashboard -->
+      <div class="tool-card">
+        <h3 class="tool-title items-baseline">
+          <i class="fas fa-chart-line mr-3 text-blue-500"></i>
+          <span>Analytics Dashboard</span>
+          <span
+            class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full"
+          >
+            Selected formats only
+          </span>
+        </h3>
+        <ul class="tool-description">
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Year-wise
+            data analytics
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Interactive
+            dashboards and reports
+          </li>
+          <li>
+            <i class="fas fa-check-circle mr-2 text-green-500"></i>Visual
+            analytics with custom dates
+          </li>
+        </ul>
+        <a
+          href="https://yearwisedata.netlify.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="tool-button-special"
+        >
+          Launch Analytics
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>
+
+<!-- Styles for the tool cards. Uses Tailwind's @apply for clean HTML -->
+<style>
+  .tool-card {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-6 flex flex-col text-left;
+    transition: all 0.2s ease-in-out;
+  }
+  .tool-card:hover {
+    @apply shadow-xl -translate-y-1;
+  }
+  .tool-title {
+    @apply text-xl font-semibold mb-4 flex items-center;
+  }
+  .tool-description {
+    @apply text-gray-600 dark:text-gray-300 mb-4 flex-grow list-none p-0;
+  }
+  .tool-description li {
+    @apply flex items-start mb-2;
+  }
+  .tool-button {
+    @apply mt-auto bg-blue-600 text-white text-center px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition w-full;
+  }
+  .tool-button-special {
+    @apply mt-auto bg-yellow-500 text-white text-center px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition w-full;
+  }
+</style>

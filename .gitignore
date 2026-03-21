@@ -1,6 +1,7 @@
 # build output
 dist/
-# generated types
+
+# astro generated
 .astro/
 
 # dependencies
@@ -12,13 +13,21 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
 # environment variables
 .env
-.env.production
+.env.*
+!.env.example
 
-# macOS-specific files
+# system files
 .DS_Store
+Thumbs.db
 
-# jetbrains setting folder
+# IDE / editors
+.vscode/
 .idea/
+
+# netlify
+.netlify/
+
+# optional
+coverage/

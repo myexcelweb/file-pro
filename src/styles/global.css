@@ -1,0 +1,60 @@
+/**
+ * This is the correct and recommended structure for a global CSS file
+ * when using Tailwind CSS in an Astro project.
+ */
+
+/*
+ * 1. IMPORT TAILWIND'S LAYERS
+ * ---------------------------
+ * These three directives are essential. They inject Tailwind's "base" styles
+ * (a CSS reset called Preflight), "components", and all of the "utility"
+ * classes that you will use to style your website.
+ *
+ * They MUST be in this order.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * 2. DEFINE CUSTOM BASE STYLES (Optional)
+ * ---------------------------------------
+ * If you need to add custom styles for basic HTML elements (like making all
+ * links a certain color), you can do it here using the @layer directive.
+ * This ensures your custom styles are properly ordered with Tailwind's.
+ */
+@layer base {
+  /* Example: Add smooth scrolling behavior to the whole site */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Example: Set a default background and text color.
+     Note: These will be overridden by classes in your layout like
+     `bg-gray-50` and `dark:bg-gray-900`, which is the intended behavior.
+  */
+  body {
+    @apply bg-white text-gray-800;
+  }
+
+  /* Example: Add a subtle underline transition to all links */
+  a {
+    @apply transition-colors duration-200;
+  }
+}
+
+/*
+ * 3. DEFINE CUSTOM COMPONENT CLASSES (Optional)
+ * ---------------------------------------------
+ * If you find yourself repeating the same long list of utility classes
+ * over and over, you can create a custom component class here.
+ */
+@layer components {
+  /* Example: Create a reusable button class.
+     You could then use `<button class="btn-primary">Click Me</button>`
+     in your HTML instead of typing out all those utilities every time.
+  */
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition;
+  }
+}

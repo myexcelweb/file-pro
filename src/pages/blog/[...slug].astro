@@ -1,0 +1,52 @@
+---
+import MainLayout from "../../layouts/MainLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+// This function works perfectly for static sites.
+// It finds all posts and tells Astro to create a page for each one.
+export async function getStaticPaths() {
+  const allPosts = await getCollection("blog");
+  return allPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// In static mode, the 'post' prop is always passed reliably.
+const { post } = Astro.props;
+
+const { Content } = await post.render();
+---
+
+<MainLayout title={`${post.data.title} | File Pro`}>
+  <div class="max-w-3xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-extrabold mb-3">{post.data.title}</h1>
+      <time
+        datetime={post.data.date.toISOString()}
+        class="text-lg text-gray-500"
+      >
+        {
+          post.data.date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
+        }
+      </time>
+    </div>
+
+    <article class="prose dark:prose-invert lg:prose-xl max-w-none">
+      <Content />
+    </article>
+
+    <div class="text-center mt-12">
+      <a
+        href="/blog"
+        class="font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+      >
+        ← Back to All Posts
+      </a>
+    </div>
+  </div>
+</MainLayout>
