@@ -10,35 +10,36 @@ echo.
 echo Building project...
 call npm run build
 
-:: Step 2: Get current version from version.txt (or create if not exists)
+:: Step 2: Create version file if not exists
 IF NOT EXIST version.txt (
     echo 1.0 > version.txt
 )
 
+:: Step 3: Read version
 set /p version=<version.txt
 
-:: Step 3: Split version (major.minor)
+:: Step 4: Split version
 for /f "tokens=1,2 delims=." %%a in ("%version%") do (
     set major=%%a
     set minor=%%b
 )
 
-:: Step 4: Increment minor version
+:: Step 5: Increment
 set /a minor=minor+1
-
-:: Step 5: Create new version
 set new_version=%major%.%minor%
 
-:: Step 6: Save new version
+:: Step 6: Save version
 echo %new_version% > version.txt
 
 echo.
 echo New Version: v%new_version%
 
-:: Step 7: Git add
+:: Step 7: Add files (EXPLICIT)
 git add .
+git add update.bat
+git add version.txt
 
-:: Step 8: Commit with auto message
+:: Step 8: Commit only if changes exist
 git diff --cached --quiet
 IF %ERRORLEVEL%==0 (
     echo No changes to commit.
