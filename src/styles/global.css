@@ -1,60 +1,129 @@
-/**
- * This is the correct and recommended structure for a global CSS file
- * when using Tailwind CSS in an Astro project.
- */
-
-/*
- * 1. IMPORT TAILWIND'S LAYERS
- * ---------------------------
- * These three directives are essential. They inject Tailwind's "base" styles
- * (a CSS reset called Preflight), "components", and all of the "utility"
- * classes that you will use to style your website.
- *
- * They MUST be in this order.
- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/*
- * 2. DEFINE CUSTOM BASE STYLES (Optional)
- * ---------------------------------------
- * If you need to add custom styles for basic HTML elements (like making all
- * links a certain color), you can do it here using the @layer directive.
- * This ensures your custom styles are properly ordered with Tailwind's.
- */
+/* ---------- Theme tokens (light / dark) ---------- */
 @layer base {
-  /* Example: Add smooth scrolling behavior to the whole site */
-  html {
-    scroll-behavior: smooth;
+  :root {
+    --bg: #f7f8fb;
+    --surface: #ffffff;
+    --text: #0f172a;
+    --muted: #5b6678; /* WCAG AA: >= 5.3:1 on light backgrounds */
+    --muted-bg: #f1f5f9;
+    --border: #e2e8f0;
+    --ring: rgba(99, 102, 241, 0.35);
+    color-scheme: light;
   }
-
-  /* Example: Set a default background and text color.
-     Note: These will be overridden by classes in your layout like
-     `bg-gray-50` and `dark:bg-gray-900`, which is the intended behavior.
-  */
+  .dark {
+    --bg: #0b1020;
+    --surface: #121829;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --muted-bg: #1c2438;
+    --border: #243049;
+    --ring: rgba(129, 140, 248, 0.45);
+    color-scheme: dark;
+  }
+  html { scroll-behavior: smooth; }
   body {
-    @apply bg-white text-gray-800;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-
-  /* Example: Add a subtle underline transition to all links */
-  a {
-    @apply transition-colors duration-200;
-  }
+  a { @apply transition-colors duration-200; }
+  [hidden] { display: none !important; }
 }
 
-/*
- * 3. DEFINE CUSTOM COMPONENT CLASSES (Optional)
- * ---------------------------------------------
- * If you find yourself repeating the same long list of utility classes
- * over and over, you can create a custom component class here.
- */
 @layer components {
-  /* Example: Create a reusable button class.
-     You could then use `<button class="btn-primary">Click Me</button>`
-     in your HTML instead of typing out all those utilities every time.
-  */
   .btn-primary {
-    @apply px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition;
+    @apply px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition;
   }
+
+  /* ---------- Search ---------- */
+  .search-box {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 0 16px; height: 56px;
+    box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.18);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .search-box:focus-within { border-color: #6366f1; box-shadow: 0 0 0 4px var(--ring); }
+  .search-box input { flex: 1; min-width: 0; background: transparent; outline: none; font-size: 1rem; color: var(--text); }
+  .search-box input::placeholder { color: var(--muted); }
+  .kbd {
+    font: 600 .72rem ui-monospace, SFMono-Regular, Menlo, monospace;
+    padding: 2px 7px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--muted-bg); color: var(--muted);
+  }
+
+  /* ---------- Chips ---------- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+    padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+    border: 1px solid var(--border); background: var(--surface); color: var(--muted);
+    transition: all .15s;
+  }
+  .chip span { font-size: .72rem; padding: 0 6px; border-radius: 999px; background: var(--muted-bg); }
+  .chip:hover { color: var(--text); }
+  .chip[aria-pressed="true"] { background: #4f46e5; border-color: #4f46e5; color: #fff; }
+  .chip[aria-pressed="true"] span { background: rgba(0, 0, 0, .18); }
+
+  .status-dot { display: inline-flex; align-items: center; gap: 6px; font-size: .75rem; color: var(--muted); }
+  .status-dot::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; }
+  .status-dot[data-tone="live"]::before { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, .2); }
+  .status-dot[data-tone="warn"]::before { background: #f59e0b; }
+
+  .recent-pill {
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    padding: 6px 12px; border-radius: 10px; font-size: .85rem; font-weight: 500;
+    background: var(--surface); border: 1px solid var(--border);
+  }
+  .recent-pill i { color: var(--c); }
+  .recent-pill:hover { border-color: var(--c); }
+
+  /* ---------- Tool card ---------- */
+  .tool-card {
+    position: relative; display: flex; flex-direction: column; gap: 14px;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+    padding: 20px; text-align: left;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .tool-card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--c) 45%, var(--border));
+    box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--c) 55%, transparent);
+  }
+  .tool-card.is-featured { border-color: color-mix(in srgb, var(--c) 40%, var(--border)); }
+  .tool-head { display: flex; align-items: center; gap: 14px; }
+  .tool-icon {
+    flex: none; width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+    font-size: 1.25rem; color: var(--c);
+    background: color-mix(in srgb, var(--c) 14%, transparent);
+  }
+  .tool-meta { min-width: 0; flex: 1; }
+  .tool-name { font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+  .tool-host { font-size: .78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tool-star { color: #f59e0b; font-size: .9rem; align-self: flex-start; }
+  .tool-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-size: .72rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--muted-bg); color: var(--muted); }
+  .tag-warn { background: rgba(245, 158, 11, .14); color: #b45309; }
+  .dark .tag-warn { color: #fbbf24; }
+  .tool-desc { font-size: .92rem; color: var(--muted); line-height: 1.5; }
+  .tool-features { display: grid; gap: 7px; font-size: .88rem; flex: 1; }
+  .tool-features li { display: flex; gap: 9px; align-items: flex-start; line-height: 1.4; }
+  .tool-features i { color: #10b981; font-size: .75rem; margin-top: 4px; width: 1em; flex: none; display: inline-block; }
+  .tool-link {
+    margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 14px; border-radius: 12px; font-weight: 600; font-size: .92rem;
+    background: color-mix(in srgb, var(--c) 12%, transparent);
+    /* darkened accent so every colour passes WCAG AA (>= 5:1) */
+    color: color-mix(in srgb, var(--c) 60%, black);
+  }
+  .dark .tool-link { color: color-mix(in srgb, var(--c) 70%, white); }
+  .tool-link i { font-size: .75rem; width: 1em; display: inline-block; }
+  /* Reserve icon space before the icon font loads (prevents layout shift) */
+  .fa-solid, .fa-regular, .fa-brands { display: inline-block; min-width: 1em; text-align: center; }
+  .tool-link:hover { background: color-mix(in srgb, var(--c) 65%, black); color: #fff !important; }
+  .tool-link:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
 }

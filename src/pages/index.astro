@@ -1,535 +1,99 @@
 ---
-// This page uses the main layout to get the header, footer, and global styles.
 import MainLayout from "../layouts/MainLayout.astro";
+import { renderCard, renderChips } from "../lib/tools";
+import { getBuildTools } from "../lib/build-data";
+
+// Links are fetched from Firestore at BUILD time so the HTML Google indexes
+// matches the live site (falls back to the built-in list). The browser then
+// keeps the list live via the Firestore SDK.
+const { tools } = await getBuildTools();
+const initial = tools.filter((t) => t.visible);
+const site = (Astro.site?.href ?? "https://file-pro.netlify.app/").replace(/\/$/, "");
+
+// Structured data: tells search engines this page is a list of web apps.
+const itemList = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "File Pro tools by Parimal Hodar",
+  numberOfItems: initial.length,
+  itemListElement: initial.map((t, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "SoftwareApplication",
+      name: t.name,
+      url: t.url,
+      description: t.description || t.features.join(". "),
+      applicationCategory: t.category === "Utilities" ? "UtilitiesApplication" : "BusinessApplication",
+      operatingSystem: "Web browser",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "INR" },
+      author: { "@type": "Person", name: "Parimal Hodar", url: `${site}/about/` },
+    },
+  })),
+});
+// Initial data for the browser script, so it starts from exactly what's in the HTML.
+const initialJson = JSON.stringify(initial).replace(/</g, "\\u003c");
 ---
 
 <MainLayout
   title="Parimal Hodar – File Pro | Advanced Digital Tools"
   description="Official website of Parimal Hodar. Explore cutting-edge digital tools, Excel apps, PDF editors, and more by Parimal Hodar."
-  keywords="Parimal Hodar, digital tools, Excel tools, PDF editor, AI image editor, portfolio, blog"
 >
-
-  <!-- =================================================================== -->
-  <!-- 1. HERO SECTION                                                     -->
-  <!-- =================================================================== -->
-  <section class="text-center py-20 bg-gray-100 dark:bg-gray-800 rounded-lg">
-    <h1 class="text-5xl font-extrabold mb-4">
-      Advanced Digital Tools Suite
-      <span class="text-xl font-normal">by Parimal Hodar</span>
-    </h1>
-    <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-      Unlock your potential with digital tools, PDF editors, Excel apps, and AI solutions by Parimal Hodar.
+  <!-- Hero + search -->
+  <section class="relative text-center pt-10 pb-8 sm:pt-16">
+    <div class="pointer-events-none absolute inset-x-0 -top-16 -z-10 mx-auto h-80 max-w-4xl" style="background:radial-gradient(closest-side at 35% 50%, rgba(129,140,248,.28), transparent), radial-gradient(closest-side at 65% 45%, rgba(232,121,249,.22), transparent), radial-gradient(closest-side at 50% 60%, rgba(56,189,248,.18), transparent)"></div>
+    <p class="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold" style="border-color:var(--border);color:var(--muted);background:var(--surface)">
+      <i class="fa-solid fa-bolt text-amber-500"></i> Free · browser-based · no sign-up
     </p>
-  </section>
+    <h1 class="mt-5 text-4xl sm:text-5xl font-extrabold tracking-tight">
+      Every tool you need,
+      <span class="bg-gradient-to-r from-indigo-600 to-fuchsia-500 bg-clip-text text-transparent">one place.</span>
+    </h1>
+    <p class="mt-4 text-lg max-w-2xl mx-auto" style="color:var(--muted)">
+      PDF editors, Excel apps, court report generators and AI utilities by Parimal Hodar. Search and jump straight to the tool you need.
+    </p>
 
-  <!-- =================================================================== -->
-  <!-- 2. TOOLS SECTION (with detailed highlights)                         -->
-  <!-- =================================================================== -->
-  <section id="tools" class="my-20">
-    <h2 class="text-3xl font-bold mb-8 text-center">
-      Premium Professional Tools
-      <span class="text-lg font-medium text-gray-500 dark:text-gray-400">by Parimal Hodar</span>
-    </h2>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-      <!-- Report Hub (પત્રક) -->
-      <div class="tool-card">
-        <h3 class="tool-title items-baseline">
-          <i class="fas fa-file-alt mr-3 text-indigo-500"></i>
-          <span>Report Hub (પત્રક)</span>
-          <span class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full">
-            Selected formats only
-          </span>
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Generate monthly & quarterly reports
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Easy statement preparation
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Streamlined data processing
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>User-friendly interface
-          </li>
-        </ul>
-        <a
-          href="https://patrak.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button-special"
-        >
-          Launch Report Hub
-        </a>
-      </div>
-
-      <!-- PDF Document Editor Pro -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-file-pdf mr-3 text-red-500"></i>PDF Document Editor Pro
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>AI-powered PDF editing
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Compression, merging, & watermarking
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Secure document processing
-          </li>
-        </ul>
-        <a
-          href="https://pdf-pro.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch PDF Editor
-        </a>
-      </div>
-
-      <!-- AI Image Background Studio -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-image mr-3 text-purple-500"></i>AI Image Background Studio
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>AI-based background editing
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Remove, replace, and enhance
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Batch processing and 4K output
-          </li>
-        </ul>
-        <a
-          href="https://bg-pro.streamlit.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Image Studio
-        </a>
-      </div>
-
-      <!-- Excel Merger Pro -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-file-excel mr-3 text-green-500"></i>Excel Merger Pro
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Advanced Excel file merging
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Preserves formulas and formatting
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Fast, smart merge algorithms
-          </li>
-        </ul>
-        <a
-          href="https://xl-join.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Excel Merger
-        </a>
-      </div>
-
-      <!-- Legal Calculator Suite -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-gavel mr-3 text-yellow-600"></i>Legal Calculator Suite
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Real-time legal fee calculations
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Court, advocate, and probate fees
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Updated fee structures
-          </li>
-        </ul>
-        <a
-          href="https://advfee.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Calculator
-        </a>
-      </div>
-
-      <!-- Calendar Pro -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-calendar-alt mr-3 text-blue-600"></i>Calendar Pro
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Tailored for advocates & judiciary staff
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Gujarat government employee holidays included
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Court schedules & legal calendar events
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Gujarat specific — always up to date
-          </li>
-        </ul>
-        <a
-          href="https://calendar-pro.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Calendar Pro
-        </a>
-      </div>
-
-      <!-- Age Calculator (NEW) -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-birthday-cake mr-3 text-pink-500"></i>Age Calculator
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Calculate age in days, months & years
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Supports any date format
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Excel-based age calculation
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Fast, simple & accurate results
-          </li>
-        </ul>
-        <a
-          href="https://excel-age-calculator.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Age Calculator
-        </a>
-      </div>
-
-      <!-- Pending Case Tracker -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-hourglass-half mr-3 text-rose-500"></i>Pending Case Tracker
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Date-wise pending case tracking
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Month-wise auto disposal calculation
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Quick overview of case status
-          </li>
-        </ul>
-        <a
-          href="https://pending-as-on.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Case Tracker
-        </a>
-      </div>
-
-      <!-- Heading Pro -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-heading mr-3 text-indigo-500"></i>Heading Pro
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Smart Excel data organizer
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Groups data by category automatically
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Adds headings & serial numbers
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Works fully offline - data stays private
-          </li>
-        </ul>
-        <a
-          href="https://heading-pro.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Heading Pro
-        </a>
-      </div>
-
-      <!-- Porbandar (Gujarat) Voter List 2002 -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-search mr-3 text-teal-500"></i>Porbandar Voter List 2002
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Search your name in 2002 voter list
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Enter details in Gujarati only
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>EPIC numbers: enter last 6 digits only
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Porbandar (Gujarat) specific database
-          </li>
-        </ul>
-        <a
-          href="https://porbandar-voter-list-2002.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Search Voter List
-        </a>
-      </div>
-
-      <!-- Real-Time File Transfer -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-folder-open mr-3 text-orange-500"></i>Real-Time File Transfer
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Share files instantly via a 6-digit room code
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Auto-deletes after 15 minutes — no storage
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Multiple files supported, up to 100 MB
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>No registration required
-          </li>
-        </ul>
-        <a
-          href="https://file-transfer-room.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch File Transfer
-        </a>
-      </div>
-
-      <!-- Balance Sheets (Transfer) Report Generator -->
-      <div class="tool-card">
-        <h3 class="tool-title">
-          <i class="fas fa-file-invoice-dollar mr-3 text-cyan-600"></i>
-          Balance Sheets (Transfer) Report Generator
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>
-            Upload Excel files and map columns visually
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>
-            Auto-generate balance sheet and category-wise reports
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>
-            Case transfer processing with fast export support
-          </li>
-        </ul>
-        <a
-          href="https://case-transfer.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button"
-        >
-          Launch Report Generator
-        </a>
-      </div>
-
-      <!-- Excel Pro Center -->
-      <div class="tool-card">
-        <h3 class="tool-title items-baseline">
-          <i class="fas fa-table mr-3 text-green-600"></i>
-          <span>Excel Pro Center</span>
-          <span class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full">
-            Selected formats only
-          </span>
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Advanced Excel transformation hub
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Data cleaning, validation, and conversion
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Bulk operations and error detection
-          </li>
-        </ul>
-        <a
-          href="https://xlreports.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button-special"
-        >
-          Launch Excel Tools
-        </a>
-      </div>
-
-      <!-- Analytics Dashboard -->
-      <div class="tool-card">
-        <h3 class="tool-title items-baseline">
-          <i class="fas fa-chart-line mr-3 text-blue-500"></i>
-          <span>Analytics Dashboard</span>
-          <span class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full">
-            Selected formats only
-          </span>
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Year-wise data analytics
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Interactive dashboards and reports
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Visual analytics with custom dates
-          </li>
-        </ul>
-        <a
-          href="https://yearwisedata.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button-special"
-        >
-          Launch Analytics
-        </a>
-      </div>
-
-      <!-- Disposed List PDF to Excel (NEW) -->
-      <div class="tool-card">
-        <h3 class="tool-title items-baseline">
-          <i class="fas fa-file-export mr-3 text-lime-600"></i>
-          <span>Disposed List PDF to Excel</span>
-          <span class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full">
-            Selected formats only
-          </span>
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Convert Disposed List PDF to Excel
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Specific PDF format support only
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Fast, simple & browser-based
-          </li>
-        </ul>
-        <a
-          href="https://dis-list-pdf-to-xl.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button-special"
-        >
-          Launch Disposed List Converter
-        </a>
-      </div>
-
-      <!-- Return Report Analyzer (UPDATED: Return Report PDF to Excel, specific format only) -->
-      <div class="tool-card">
-        <h3 class="tool-title items-baseline">
-          <i class="fas fa-clipboard-list mr-3 text-emerald-500"></i>
-          <span>Return Report Analyzer</span>
-          <span class="ml-2 text-sm font-medium bg-orange-100 text-orange-600 px-2.5 py-1 rounded-full">
-            Selected formats only
-          </span>
-        </h3>
-        <ul class="tool-description">
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Return Report PDF to Excel
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>PDF Report Analysis
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Case Category Analysis
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Category-wise Reports
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Fast & Simple
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Browser-based
-          </li>
-          <li>
-            <i class="fas fa-check-circle mr-2 text-green-500"></i>Excel Export
-          </li>
-        </ul>
-        <a
-          href="https://return-report.netlify.app/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="tool-button-special"
-        >
-          Launch Return Report
-        </a>
-      </div>
-
+    <div class="mt-8 max-w-2xl mx-auto">
+      <label class="search-box" for="tool-search">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--muted)"></i>
+        <input id="tool-search" type="search" placeholder="Search tools… e.g. pdf, excel, calendar" autocomplete="off" spellcheck="false" enterkeyhint="search" />
+        <span class="kbd hidden sm:inline">/</span>
+      </label>
     </div>
   </section>
 
+  <!-- Recently opened -->
+  <section id="tool-recent" class="mb-6" hidden>
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-sm font-semibold" style="color:var(--muted)"><i class="fa-solid fa-clock-rotate-left mr-1"></i> Recently opened</h2>
+      <button id="recent-clear" type="button" class="text-xs hover:underline" style="color:var(--muted)">Clear</button>
+    </div>
+    <div class="recent-list flex gap-2 overflow-x-auto pb-1"></div>
+  </section>
+
+  <!-- Filters -->
+  <section id="tools" class="scroll-mt-24" aria-labelledby="tools-heading">
+    <h2 id="tools-heading" class="sr-only">All tools</h2>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <div id="tool-chips" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1" role="toolbar" aria-label="Filter by category" set:html={renderChips(initial)} />
+      <div class="flex items-center gap-4 text-sm" style="color:var(--muted)">
+        <span id="tool-count" aria-live="polite">{initial.length} of {initial.length} tools</span>
+        <span id="tool-status" class="status-dot">Built-in list</span>
+      </div>
+    </div>
+
+    <div id="tool-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" set:html={initial.map(renderCard).join("")} />
+
+    <div id="tool-empty" class="text-center py-16" hidden>
+      <i class="fa-regular fa-face-frown text-4xl mb-3" style="color:var(--muted)"></i>
+      <p class="font-semibold">No tools match your search.</p>
+      <p class="text-sm mt-1" style="color:var(--muted)">Try a different keyword or pick “All”.</p>
+    </div>
+  </section>
+  <script type="application/json" id="tool-data" set:html={initialJson} />
+  <script type="application/ld+json" set:html={itemList} />
 </MainLayout>
 
-<!-- Styles for the tool cards. Uses Tailwind's @apply for clean HTML -->
-<style>
-  .tool-card {
-    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md p-6 flex flex-col text-left;
-    transition: all 0.2s ease-in-out;
-  }
-  .tool-card:hover {
-    @apply shadow-xl -translate-y-1;
-  }
-  .tool-title {
-    @apply text-xl font-semibold mb-4 flex items-center;
-  }
-  .tool-description {
-    @apply text-gray-600 dark:text-gray-300 mb-4 flex-grow list-none p-0;
-  }
-  .tool-description li {
-    @apply flex items-start mb-2;
-  }
-  .tool-button {
-    @apply mt-auto bg-blue-600 text-white text-center px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition w-full;
-  }
-  .tool-button-special {
-    @apply mt-auto bg-yellow-500 text-white text-center px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition w-full;
-  }
-</style>
+<script>
+  import "../scripts/home";
+</script>

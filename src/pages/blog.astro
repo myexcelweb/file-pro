@@ -10,7 +10,10 @@ const allPosts = await getCollection("blog");
 const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<MainLayout title="Blog | File Pro">
+<MainLayout
+  title="Blog | File Pro by Parimal Hodar"
+  description="Updates, guides and tips for File Pro's free PDF, Excel and court-report tools by Parimal Hodar."
+>
   <!-- Centered container for the blog content -->
   <div class="max-w-3xl mx-auto">
 

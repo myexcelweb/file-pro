@@ -1,0 +1,46 @@
+rules_version = '2';
+
+// ---------------------------------------------------------------------------
+// File Pro — rules for the /filepro collection ONLY.
+//
+// If your project already has rules, copy just the `match /filepro/{toolId}`
+// block (and the isValidTool function) inside your existing
+// `match /databases/{database}/documents { ... }` block. Leave the rest alone.
+// ---------------------------------------------------------------------------
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /filepro/{toolId} {
+      // Anyone can read the link list (the public site needs this).
+      allow read: if true;
+
+      // Writes are open (no login), but every document must match the exact
+      // shape the admin panel writes. This blocks junk fields, huge payloads
+      // and javascript:/data: URLs.
+      allow create, update: if isValidTool(request.resource.data);
+      allow delete: if true;
+    }
+
+    function isValidTool(d) {
+      return d.keys().hasOnly(['name', 'url', 'description', 'features', 'icon', 'color',
+                               'category', 'badge', 'buttonLabel', 'featured', 'visible',
+                               'order', 'updatedAt'])
+        && d.keys().hasAll(['name', 'url', 'description', 'features', 'icon', 'color',
+                            'category', 'badge', 'buttonLabel', 'featured', 'visible',
+                            'order', 'updatedAt'])
+        && d.name is string        && d.name.size() > 0 && d.name.size() <= 80
+        && d.url is string         && d.url.size() <= 500 && d.url.matches('^https?://[^\\s]+$')
+        && d.description is string && d.description.size() <= 300
+        && d.features is list      && d.features.size() <= 12
+        && d.icon is string        && d.icon.matches('^fa-[a-z0-9-]{1,37}$')
+        && d.color is string       && d.color.matches('^#[0-9a-fA-F]{6}$')
+        && d.category is string    && d.category.size() <= 40
+        && d.badge is string       && d.badge.size() <= 40
+        && d.buttonLabel is string && d.buttonLabel.size() <= 40
+        && d.featured is bool
+        && d.visible is bool
+        && d.order is number
+        && d.updatedAt == request.time;
+    }
+  }
+}
