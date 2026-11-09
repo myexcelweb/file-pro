@@ -71,4 +71,7 @@ export default defineConfig({
   // start a Deno edge-functions server (unused here) and crashes, so skip it.
   adapter: process.argv.includes("dev") ? undefined : netlify(),
   integrations: [sitemap(), obfuscateClient()],
+  // Hide Astro's developer toolbar (bottom pill) during `npm run dev`.
+  // It never appears in production builds anyway.
+  devToolbar: { enabled: false },
 });
